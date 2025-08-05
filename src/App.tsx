@@ -2,7 +2,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
-import LaptopInventory from './pages/LaptopInventory';
+import ITChecklistManager from './pages/ITChecklistManager';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,7 +29,7 @@ function App() {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <AppLayout>
-          <LaptopInventory />
+          <ITChecklistManager />
         </AppLayout>
       </QueryClientProvider>
     </ThemeProvider>

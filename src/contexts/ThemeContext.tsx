@@ -9,7 +9,7 @@ export const MondayLight = {
   textSecondary: '#6B6B6B',
   tableHeaderBg: '#F5F6F8',
   tableBorder: '#E2E4E9',
-  primaryAccent: '#DC2626',
+  primaryAccent: '#0D1B2A',
   success: '#00C875',
   warning: '#FFCB00',
   danger: '#DC2626',

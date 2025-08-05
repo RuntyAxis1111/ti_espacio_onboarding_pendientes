@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
-import { ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const Navbar: React.FC = () => {
   const theme = useTheme();
@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
     <motion.nav 
       className="sticky top-0 z-50"
       style={{ 
-        backgroundColor: theme.background,
+        backgroundColor: '#0f172a', // slate-900
         borderBottom: `1px solid ${theme.tableBorder}`
       }}
       initial={{ y: -100 }}
@@ -22,11 +22,11 @@ const Navbar: React.FC = () => {
           <motion.div 
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
-            style={{ color: theme.textPrimary }}
+            style={{ color: '#f8fafc' }} // slate-50
           >
-            <ComputerDesktopIcon className="h-8 w-8" style={{ color: theme.primaryAccent }} />
+            <CheckCircleIcon className="h-8 w-8" style={{ color: theme.primaryAccent }} />
             <span className="text-xl font-extrabold">
-              HYBE LATAM FEED FINANCE
+              IT CHECKLIST MANAGER
             </span>
           </motion.div>
         </div>
