@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
         </button>
 
         <div className="mt-6 text-center text-sm text-slate-500">
-          <p>Al iniciar sesión, aceptas nuestros términos de servicio</p>
+          <p>Solo usuarios autorizados de Hybe Latin America</p>
         </div>
       </motion.div>
     </div>
