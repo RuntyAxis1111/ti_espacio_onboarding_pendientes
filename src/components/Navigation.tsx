@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ClipboardListIcon } from '@heroicons/react/24/outline';
+import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 interface NavigationProps {
   activeTab: string;
@@ -9,9 +9,9 @@ interface NavigationProps {
 
 const tabs = [
   { id: 'it-checklist', label: 'IT Checklist', icon: '🐧' },
-  { id: 'pendientes-johan', label: 'Pendientes Johan', icon: ClipboardListIcon },
-  { id: 'pendientes-dani', label: 'Pendientes Dani', icon: ClipboardListIcon },
-  { id: 'pendientes-paco', label: 'Pendientes Paco', icon: ClipboardListIcon },
+  { id: 'pendientes-johan', label: 'Pendientes Johan', icon: ClipboardDocumentListIcon },
+  { id: 'pendientes-dani', label: 'Pendientes Dani', icon: ClipboardDocumentListIcon },
+  { id: 'pendientes-paco', label: 'Pendientes Paco', icon: ClipboardDocumentListIcon },
 ];
 
 const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {

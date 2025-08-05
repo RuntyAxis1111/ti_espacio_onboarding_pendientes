@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { 
   PlusIcon, 
   XMarkIcon,
-  ClipboardListIcon 
+  ClipboardDocumentListIcon 
 } from '@heroicons/react/24/outline';
 import { supabase, PendingTask, ImportanceLevel, getPendingTasks, updateTask, createTask } from '../lib/supabaseClient';
 
@@ -170,7 +170,7 @@ const PendingTasksManager: React.FC<PendingTasksManagerProps> = ({ tableName, ti
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <ClipboardListIcon className="h-8 w-8 mr-3 text-slate-700" />
+            <ClipboardDocumentListIcon className="h-8 w-8 mr-3 text-slate-700" />
             <div>
               <h1 className="text-2xl font-bold text-slate-900">
                 {title}
