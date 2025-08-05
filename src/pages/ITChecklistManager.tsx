@@ -51,10 +51,10 @@ const ITChecklistManager: React.FC = () => {
 
   // Update mutation for toggles
   const updateMutation = useMutation({
-    mutationFn: async ({ person_name, field, value }: { person_name: string; field: keyof ITChecklist; value: boolean }) => {
+    mutationFn: async ({ person_name, field, currentValue }: { person_name: string; field: keyof ITChecklist; currentValue: boolean }) => {
       const { error } = await supabase
         .from('it_checklist')
-        .update({ [field]: value })
+        .update({ [field]: !currentValue })
         .eq('person_name', person_name);
       
       if (error) throw error;
@@ -108,8 +108,8 @@ const ITChecklistManager: React.FC = () => {
     }
   });
 
-  const handleToggle = async (person_name: string, field: keyof ITChecklist, currentValue: boolean) => {
-    updateMutation.mutate({ person_name, field, value: !currentValue });
+  const handleToggle = (person_name: string, field: keyof ITChecklist, currentValue: boolean) => {
+    updateMutation.mutate({ person_name, field, currentValue });
   };
 
   const validateForm = (): boolean => {
@@ -162,16 +162,16 @@ const ITChecklistManager: React.FC = () => {
     <button
       onClick={onChange}
       disabled={disabled}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer ${
         checked ? 'bg-blue-600' : 'bg-gray-200'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       style={{ 
         backgroundColor: checked ? theme.primaryAccent : '#e5e7eb',
         focusRingColor: theme.primaryAccent 
       }}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
           checked ? 'translate-x-6' : 'translate-x-1'
         }`}
       />
@@ -205,10 +205,15 @@ const ITChecklistManager: React.FC = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <CheckCircleIcon className="h-8 w-8" style={{ color: theme.primaryAccent }} />
+          <div className="flex items-center">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+              alt="Tux" 
+              className="h-8 w-8 mr-2 inline-block" 
+            />
+            <CheckCircleIcon className="h-8 w-8 mr-3" style={{ color: theme.primaryAccent }} />
             <div>
-              <h1 className="text-3xl font-extrabold" style={{ color: theme.textPrimary }}>
+              <h1 className="inline-block text-3xl font-bold" style={{ color: theme.textPrimary }}>
                 IT Checklist Manager
               </h1>
               <p style={{ color: theme.textSecondary }}>
@@ -275,40 +280,43 @@ const ITChecklistManager: React.FC = () => {
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
                   Fecha Onboarding
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                {/* Mandatory columns */}
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Antivirus
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Backup
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   1Password
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Slack
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Monday
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                {/* Extras sub-header */}
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b7280', width: '80px' }}>
+                  <span className="text-gray-500 font-semibold">Extras</span><br />
                   Adobe
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Office
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Acrobat
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Billboard
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Rost
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   Canva Pro
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
                   JumpCloud
                 </th>
               </tr>
@@ -322,7 +330,8 @@ const ITChecklistManager: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    style={rowStyle}
+                    style={{ ...rowStyle, transition: 'background-color 0.3s ease, color 0.3s ease' }}
+                    className="transition-colors duration-300"
                   >
                     <td 
                       className="px-4 py-3 text-sm font-medium sticky left-0 z-10"
@@ -337,6 +346,7 @@ const ITChecklistManager: React.FC = () => {
                     <td className="px-4 py-3 text-sm">
                       {new Date(checklist.onboarding_date).toLocaleDateString('es-ES')}
                     </td>
+                    {/* Mandatory toggles */}
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.antivirus}
@@ -372,6 +382,7 @@ const ITChecklistManager: React.FC = () => {
                         disabled={updateMutation.isPending}
                       />
                     </td>
+                    {/* Optional toggles */}
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.adobe || false}
