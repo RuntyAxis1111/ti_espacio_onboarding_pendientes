@@ -51,13 +51,14 @@ const ITChecklistManager: React.FC = () => {
 
   // Update mutation for toggles
   const updateMutation = useMutation({
-    mutationFn: async ({ person_name, field, currentValue }: { person_name: string; field: keyof ITChecklist; currentValue: boolean }) => {
+    mutationFn: async ({ person_name, field, newValue }: { person_name: string; field: keyof ITChecklist; newValue: boolean }) => {
       const { error } = await supabase
         .from('it_checklist')
-        .update({ [field]: !currentValue })
+        .update({ [field]: newValue })
         .eq('person_name', person_name);
       
       if (error) throw error;
+      return { person_name, field, newValue };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['it_checklists'] });
@@ -109,7 +110,8 @@ const ITChecklistManager: React.FC = () => {
   });
 
   const handleToggle = (person_name: string, field: keyof ITChecklist, currentValue: boolean) => {
-    updateMutation.mutate({ person_name, field, currentValue });
+    const newValue = !currentValue;
+    updateMutation.mutate({ person_name, field, newValue });
   };
 
   const validateForm = (): boolean => {
@@ -327,6 +329,7 @@ const ITChecklistManager: React.FC = () => {
                 return (
                   <motion.tr
                     key={checklist.person_name}
+                    layout={false}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -350,35 +353,50 @@ const ITChecklistManager: React.FC = () => {
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.antivirus}
-                        onChange={() => handleToggle(checklist.person_name, 'antivirus', checklist.antivirus)}
+                        onChange={() => {
+                          console.log(`Toggling antivirus for ${checklist.person_name}: ${checklist.antivirus} -> ${!checklist.antivirus}`);
+                          handleToggle(checklist.person_name, 'antivirus', checklist.antivirus);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.backup}
-                        onChange={() => handleToggle(checklist.person_name, 'backup', checklist.backup)}
+                        onChange={() => {
+                          console.log(`Toggling backup for ${checklist.person_name}: ${checklist.backup} -> ${!checklist.backup}`);
+                          handleToggle(checklist.person_name, 'backup', checklist.backup);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.onepassword}
-                        onChange={() => handleToggle(checklist.person_name, 'onepassword', checklist.onepassword)}
+                        onChange={() => {
+                          console.log(`Toggling onepassword for ${checklist.person_name}: ${checklist.onepassword} -> ${!checklist.onepassword}`);
+                          handleToggle(checklist.person_name, 'onepassword', checklist.onepassword);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.slack}
-                        onChange={() => handleToggle(checklist.person_name, 'slack', checklist.slack)}
+                        onChange={() => {
+                          console.log(`Toggling slack for ${checklist.person_name}: ${checklist.slack} -> ${!checklist.slack}`);
+                          handleToggle(checklist.person_name, 'slack', checklist.slack);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.monday}
-                        onChange={() => handleToggle(checklist.person_name, 'monday', checklist.monday)}
+                        onChange={() => {
+                          console.log(`Toggling monday for ${checklist.person_name}: ${checklist.monday} -> ${!checklist.monday}`);
+                          handleToggle(checklist.person_name, 'monday', checklist.monday);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
@@ -386,49 +404,70 @@ const ITChecklistManager: React.FC = () => {
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.adobe || false}
-                        onChange={() => handleToggle(checklist.person_name, 'adobe', checklist.adobe || false)}
+                        onChange={() => {
+                          console.log(`Toggling adobe for ${checklist.person_name}: ${checklist.adobe || false} -> ${!(checklist.adobe || false)}`);
+                          handleToggle(checklist.person_name, 'adobe', checklist.adobe || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.office || false}
-                        onChange={() => handleToggle(checklist.person_name, 'office', checklist.office || false)}
+                        onChange={() => {
+                          console.log(`Toggling office for ${checklist.person_name}: ${checklist.office || false} -> ${!(checklist.office || false)}`);
+                          handleToggle(checklist.person_name, 'office', checklist.office || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.acrobat || false}
-                        onChange={() => handleToggle(checklist.person_name, 'acrobat', checklist.acrobat || false)}
+                        onChange={() => {
+                          console.log(`Toggling acrobat for ${checklist.person_name}: ${checklist.acrobat || false} -> ${!(checklist.acrobat || false)}`);
+                          handleToggle(checklist.person_name, 'acrobat', checklist.acrobat || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.billboard || false}
-                        onChange={() => handleToggle(checklist.person_name, 'billboard', checklist.billboard || false)}
+                        onChange={() => {
+                          console.log(`Toggling billboard for ${checklist.person_name}: ${checklist.billboard || false} -> ${!(checklist.billboard || false)}`);
+                          handleToggle(checklist.person_name, 'billboard', checklist.billboard || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.rost || false}
-                        onChange={() => handleToggle(checklist.person_name, 'rost', checklist.rost || false)}
+                        onChange={() => {
+                          console.log(`Toggling rost for ${checklist.person_name}: ${checklist.rost || false} -> ${!(checklist.rost || false)}`);
+                          handleToggle(checklist.person_name, 'rost', checklist.rost || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.canva_pro || false}
-                        onChange={() => handleToggle(checklist.person_name, 'canva_pro', checklist.canva_pro || false)}
+                        onChange={() => {
+                          console.log(`Toggling canva_pro for ${checklist.person_name}: ${checklist.canva_pro || false} -> ${!(checklist.canva_pro || false)}`);
+                          handleToggle(checklist.person_name, 'canva_pro', checklist.canva_pro || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <Toggle
                         checked={checklist.jumpcloud || false}
-                        onChange={() => handleToggle(checklist.person_name, 'jumpcloud', checklist.jumpcloud || false)}
+                        onChange={() => {
+                          console.log(`Toggling jumpcloud for ${checklist.person_name}: ${checklist.jumpcloud || false} -> ${!(checklist.jumpcloud || false)}`);
+                          handleToggle(checklist.person_name, 'jumpcloud', checklist.jumpcloud || false);
+                        }}
                         disabled={updateMutation.isPending}
                       />
                     </td>
