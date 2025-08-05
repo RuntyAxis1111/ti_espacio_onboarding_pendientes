@@ -146,18 +146,18 @@ const ITChecklistManager: React.FC = () => {
   const getRowStyle = (checklist: ITChecklist) => {
     if (checklist.jumpcloud) {
       return {
-        backgroundColor: '#FFD700', // Gold
-        color: '#0f172a' // slate-900
+        backgroundColor: 'rgba(255, 215, 0, 0.8)', // Gold with 80% opacity
+        color: '#0f172a'
       };
     } else if (checklist.mandatory_ok) {
       return {
-        backgroundColor: '#dcfce7', // emerald-100
-        color: '#064e3b' // emerald-900
+        backgroundColor: 'rgba(220, 252, 231, 0.8)', // emerald-100 with 80% opacity
+        color: '#064e3b'
       };
     } else {
       return {
-        backgroundColor: '#fecaca', // rose-100
-        color: '#7f1d1d' // rose-900
+        backgroundColor: 'rgba(254, 202, 202, 0.8)', // rose-100 with 80% opacity
+        color: '#7f1d1d'
       };
     }
   };
@@ -169,16 +169,13 @@ const ITChecklistManager: React.FC = () => {
   }> = ({ checked, onChange }) => (
     <button
       onClick={onChange}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none cursor-pointer ${
-        checked ? 'bg-blue-600' : 'bg-gray-200'
+      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-slate-400/50 cursor-pointer ${
+        checked ? 'bg-slate-700' : 'bg-slate-300'
       }`}
-      style={{ 
-        backgroundColor: checked ? theme.primaryAccent : '#e5e7eb'
-      }}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-          checked ? 'translate-x-6' : 'translate-x-1'
+        className={`inline-block h-3 w-3 transform rounded-full bg-slate-50 transition-transform duration-300 ${
+          checked ? 'translate-x-5' : 'translate-x-1'
         }`}
       />
     </button>
@@ -203,7 +200,7 @@ const ITChecklistManager: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen" style={{ backgroundColor: theme.background }}>
+    <div className="max-w-7xl mx-auto p-6">
       <motion.div
         className="mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -217,12 +214,12 @@ const ITChecklistManager: React.FC = () => {
               alt="Tux" 
               className="h-8 w-8 mr-2 inline-block" 
             />
-            <CheckCircleIcon className="h-8 w-8 mr-3" style={{ color: theme.primaryAccent }} />
+            <CheckCircleIcon className="h-8 w-8 mr-3 text-slate-700" />
             <div>
-              <h1 className="inline-block text-3xl font-bold" style={{ color: theme.textPrimary }}>
+              <h1 className="inline-block text-2xl font-bold text-slate-900">
                 IT Checklist Manager
               </h1>
-              <p style={{ color: theme.textSecondary }}>
+              <p className="text-slate-500">
                 Gestión de onboarding de empleados
               </p>
             </div>
@@ -231,12 +228,7 @@ const ITChecklistManager: React.FC = () => {
           {/* Progress Badge */}
           <div className="flex items-center space-x-4">
             <div 
-              className="px-4 py-2 rounded-full text-sm font-medium"
-              style={{
-                backgroundColor: `${theme.success}20`,
-                color: theme.success,
-                border: `1px solid ${theme.success}30`
-              }}
+              className="px-4 py-2 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700 border border-emerald-200"
             >
               {completedCount} / {totalCount} checklist completos
             </div>
@@ -244,8 +236,7 @@ const ITChecklistManager: React.FC = () => {
             {/* Create button */}
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-white font-medium transition-colors"
-              style={{ backgroundColor: theme.primaryAccent }}
+              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-white font-medium transition-colors bg-slate-900 hover:bg-slate-800"
               disabled={createMutation.isPending}
             >
               <PlusIcon className="h-4 w-4" />
@@ -268,76 +259,72 @@ const ITChecklistManager: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="table-wrapper overflow-x-auto rounded-xl border" style={{ borderColor: theme.tableBorder }}>
-          <table className="data-table w-full" style={{ backgroundColor: theme.background }}>
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
             <thead>
-              <tr style={{ backgroundColor: theme.tableHeaderBg }}>
+              <tr className="bg-slate-50 border-b border-slate-200">
                 <th 
-                  className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider sticky left-0 z-10"
-                  style={{ 
-                    color: theme.textSecondary,
-                    backgroundColor: theme.tableHeaderBg,
-                    width: '220px',
-                    minWidth: '220px'
-                  }}
+                  className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider sticky left-0 z-10 bg-slate-50"
+                  style={{ width: '220px', minWidth: '220px' }}
                 >
                   Empleado
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary }}>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Fecha Onboarding
                 </th>
                 {/* Mandatory columns */}
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Antivirus
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Backup
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   1Password
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Slack
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Monday
                 </th>
                 {/* Extras sub-header */}
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: '#6b7280', width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500" style={{ width: '80px' }}>
                   <span className="text-gray-500 font-semibold">Extras</span><br />
                   Adobe
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Office
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Acrobat
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Billboard
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Rost
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   Canva Pro
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider" style={{ color: theme.textSecondary, width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   JumpCloud
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y" style={{ divideColor: theme.tableBorder }}>
+            <tbody className="divide-y divide-slate-200">
               {sortedChecklists.map((checklist) => {
                 const rowStyle = getRowStyle(checklist);
                 return (
                   <tr
                     key={checklist.person_name}
-                    style={{ ...rowStyle, transition: 'background-color 0.3s ease, color 0.3s ease' }}
-                    className="transition-colors duration-300"
+                    className="transition-all duration-300 hover:bg-slate-50"
+                    style={rowStyle}
                   >
                     <td 
-                      className="px-4 py-3 text-sm font-medium sticky left-0 z-10"
+                      className="px-6 py-4 text-sm font-medium sticky left-0 z-10"
                       style={{ 
                         ...rowStyle,
                         width: '220px',
@@ -346,78 +333,78 @@ const ITChecklistManager: React.FC = () => {
                     >
                       {checklist.person_name}
                     </td>
-                    <td className="px-4 py-3 text-sm">
+                    <td className="px-6 py-4 text-sm">
                       {new Date(checklist.onboarding_date).toLocaleDateString('es-ES')}
                     </td>
                     {/* Mandatory toggles */}
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.antivirus}
                         onChange={() => updateField(checklist.person_name, 'antivirus', !checklist.antivirus)}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.backup}
                         onChange={() => updateField(checklist.person_name, 'backup', !checklist.backup)}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.onepassword}
                         onChange={() => updateField(checklist.person_name, 'onepassword', !checklist.onepassword)}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.slack}
                         onChange={() => updateField(checklist.person_name, 'slack', !checklist.slack)}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.monday}
                         onChange={() => updateField(checklist.person_name, 'monday', !checklist.monday)}
                       />
                     </td>
                     {/* Optional toggles */}
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.adobe || false}
                         onChange={() => updateField(checklist.person_name, 'adobe', !(checklist.adobe || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.office || false}
                         onChange={() => updateField(checklist.person_name, 'office', !(checklist.office || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.acrobat || false}
                         onChange={() => updateField(checklist.person_name, 'acrobat', !(checklist.acrobat || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.billboard || false}
                         onChange={() => updateField(checklist.person_name, 'billboard', !(checklist.billboard || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.rost || false}
                         onChange={() => updateField(checklist.person_name, 'rost', !(checklist.rost || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.canva_pro || false}
                         onChange={() => updateField(checklist.person_name, 'canva_pro', !(checklist.canva_pro || false))}
                       />
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-4 text-center">
                       <Toggle
                         checked={checklist.jumpcloud || false}
                         onChange={() => updateField(checklist.person_name, 'jumpcloud', !(checklist.jumpcloud || false))}
@@ -428,6 +415,7 @@ const ITChecklistManager: React.FC = () => {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -441,20 +429,18 @@ const ITChecklistManager: React.FC = () => {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="rounded-xl p-6 w-full max-w-md"
-              style={{ backgroundColor: theme.background }}
+              className="bg-white rounded-xl p-6 w-full max-w-md"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold" style={{ color: theme.textPrimary }}>
+                <h3 className="text-lg font-semibold text-slate-900">
                   Nuevo Empleado
                 </h3>
                 <button
                   onClick={() => setShowCreateForm(false)}
-                  className="p-1 rounded-lg hover:bg-opacity-10"
-                  style={{ color: theme.textSecondary }}
+                  className="p-1 rounded-lg hover:bg-slate-100 text-slate-500"
                 >
                   <XMarkIcon className="h-5 w-5" />
                 </button>
@@ -463,23 +449,18 @@ const ITChecklistManager: React.FC = () => {
               <form onSubmit={handleCreateSubmit} className="space-y-4">
                 {/* Person Name */}
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: theme.textPrimary }}>
+                  <label className="block text-sm font-medium mb-1 text-slate-900">
                     Nombre del Empleado *
                   </label>
                   <input
                     type="text"
                     value={formData.person_name}
                     onChange={(e) => setFormData({ ...formData, person_name: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
-                    style={{
-                      backgroundColor: theme.background,
-                      borderColor: formErrors.person_name ? theme.danger : theme.tableBorder,
-                      color: theme.textPrimary
-                    }}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-900"
                     placeholder="Ej: Juan Pérez"
                   />
                   {formErrors.person_name && (
-                    <p className="text-xs mt-1" style={{ color: theme.danger }}>
+                    <p className="text-xs mt-1 text-red-600">
                       {formErrors.person_name}
                     </p>
                   )}
@@ -487,22 +468,17 @@ const ITChecklistManager: React.FC = () => {
 
                 {/* Onboarding Date */}
                 <div>
-                  <label className="block text-sm font-medium mb-1" style={{ color: theme.textPrimary }}>
+                  <label className="block text-sm font-medium mb-1 text-slate-900">
                     Fecha de Onboarding *
                   </label>
                   <input
                     type="date"
                     value={formData.onboarding_date}
                     onChange={(e) => setFormData({ ...formData, onboarding_date: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
-                    style={{
-                      backgroundColor: theme.background,
-                      borderColor: formErrors.onboarding_date ? theme.danger : theme.tableBorder,
-                      color: theme.textPrimary
-                    }}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-900"
                   />
                   {formErrors.onboarding_date && (
-                    <p className="text-xs mt-1" style={{ color: theme.danger }}>
+                    <p className="text-xs mt-1 text-red-600">
                       {formErrors.onboarding_date}
                     </p>
                   )}
@@ -513,19 +489,14 @@ const ITChecklistManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowCreateForm(false)}
-                    className="flex-1 px-4 py-2 border rounded-lg font-medium transition-colors"
-                    style={{
-                      borderColor: theme.tableBorder,
-                      color: theme.textSecondary
-                    }}
+                    className="flex-1 px-4 py-2 border border-slate-300 rounded-lg font-medium transition-colors text-slate-700 hover:bg-slate-50"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={createMutation.isPending}
-                    className="flex-1 px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50"
-                    style={{ backgroundColor: theme.primaryAccent }}
+                    className="flex-1 px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50 bg-slate-900 hover:bg-slate-800"
                   >
                     {createMutation.isPending ? 'Creando...' : 'Crear Empleado'}
                   </button>
