@@ -35,21 +35,22 @@ const AppLayout: React.FC = () => {
   };
   
   return (
-    <AuthLayout>
       <div className="min-h-screen bg-white">
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
         <main>{renderContent()}</main>
       </div>
-    </AuthLayout>
   );
 };
 
 function App() {
+  console.log('🔍 App: Rendering main App component');
   return (
     <AuthProvider>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <AppLayout />
+          <AuthLayout>
+            <AppLayout />
+          </AuthLayout>
         </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>

@@ -29,12 +29,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('🔍 AuthProvider: Initializing auth check...');
+    
     // Get initial session
     const getInitialSession = async () => {
+      console.log('🔍 AuthProvider: Getting initial session...');
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('🔍 AuthProvider: Initial session:', session);
       setSession(session);
       setUser(session?.user ?? null);
+      console.log('🔍 AuthProvider: User set to:', session?.user ?? null);
       setLoading(false);
+      console.log('🔍 AuthProvider: Loading set to false');
     };
 
     getInitialSession();
@@ -42,6 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔍 AuthProvider: Auth state changed:', event, session);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -52,6 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const signOut = async () => {
+    console.log('🔍 AuthProvider: Signing out...');
     await supabase.auth.signOut();
   };
 
@@ -61,6 +69,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     signOut,
   };
+
+  console.log('🔍 AuthProvider: Rendering with user:', user, 'loading:', loading);
 
   return (
     <AuthContext.Provider value={value}>

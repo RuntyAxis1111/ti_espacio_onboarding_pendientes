@@ -5,16 +5,20 @@ import { supabase } from '../lib/supabaseClient';
 const LoginPage: React.FC = () => {
   const handleGoogleLogin = async () => {
     try {
+      console.log('🔍 LoginPage: Initiating Google login...');
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: { 
           redirectTo: `${window.location.origin}` 
         }
       });
+      console.log('🔍 LoginPage: Google login initiated');
     } catch (error) {
       console.error('Error during Google login:', error);
     }
   };
+
+  console.log('🔍 LoginPage: Rendering login page');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
