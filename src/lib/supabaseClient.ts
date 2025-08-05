@@ -5,6 +5,20 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+export type ImportanceLevel = 'baja' | 'media' | 'alta' | 'critica';
+
+export interface PendingTask {
+  id: string;
+  title: string;
+  description?: string;
+  start_date?: string;
+  due_date?: string;
+  importance: ImportanceLevel;
+  completed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ITChecklist {
   person_name: string;
   onboarding_date: string;
@@ -33,4 +47,34 @@ export const getITChecklists = async (): Promise<ITChecklist[]> => {
   
   if (error) throw error;
   return data || [];
+};
+
+// Función para obtener tareas pendientes
+export const getPendingTasks = async (table: string): Promise<PendingTask[]> => {
+  const { data, error } = await supabase
+    .from(table)
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) throw error;
+  return data || [];
+};
+
+// Función para actualizar una tarea
+export const updateTask = async (table: string, id: string, updates: Partial<PendingTask>) => {
+  const { error } = await supabase
+    .from(table)
+    .update(updates)
+    .eq('id', id);
+  
+  if (error) throw error;
+};
+
+// Función para crear una nueva tarea
+export const createTask = async (table: string, task: Omit<PendingTask, 'id' | 'created_at' | 'updated_at'>) => {
+  const { error } = await supabase
+    .from(table)
+    .insert([task]);
+  
+  if (error) throw error;
 };
