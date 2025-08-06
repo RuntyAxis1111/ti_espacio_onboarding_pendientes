@@ -86,12 +86,14 @@ const PendingTasksManager: React.FC<PendingTasksManagerProps> = ({ tableName, ti
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (task: NewTaskForm) => {
+      console.log(`Creating task in table: ${tableName}`);
       await createTask(tableName, {
         ...task,
         completed: false
       });
     },
     onSuccess: () => {
+      console.log(`Task created successfully in ${tableName}`);
       queryClient.invalidateQueries({ queryKey: ['pending_tasks', tableName] });
       setShowCreateForm(false);
       setFormData({
@@ -104,7 +106,7 @@ const PendingTasksManager: React.FC<PendingTasksManagerProps> = ({ tableName, ti
       setFormErrors({});
     },
     onError: (error: any) => {
-      console.error('Error creating task:', error);
+      console.error(`Error creating task in ${tableName}:`, error);
     }
   });
 

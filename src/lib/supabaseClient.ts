@@ -36,6 +36,7 @@ export interface ITChecklist {
   jumpcloud?: boolean;
   updated_at?: string;
   mandatory_ok?: boolean;
+  comments?: string;
 }
 
 // Función para obtener todos los checklists

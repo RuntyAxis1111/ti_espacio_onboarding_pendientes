@@ -6,7 +6,9 @@ import {
   CheckCircleIcon, 
   PlusIcon, 
   XMarkIcon,
-  UserPlusIcon 
+  UserPlusIcon,
+  PencilIcon,
+  CheckIcon
 } from '@heroicons/react/24/outline';
 import { supabase, ITChecklist, getITChecklists } from '../lib/supabaseClient';
 
@@ -24,6 +26,10 @@ const ITChecklistManager: React.FC = () => {
     onboarding_date: new Date().toISOString().split('T')[0]
   });
   const [formErrors, setFormErrors] = useState<Partial<NewEmployeeForm>>({});
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<string>('');
+  const [commentsText, setCommentsText] = useState('');
+  const [editingDate, setEditingDate] = useState<string | null>(null);
 
   const { data: checklists = [], isLoading, error } = useQuery({
     queryKey: ['it_checklists'],
@@ -79,6 +85,72 @@ const ITChecklistManager: React.FC = () => {
     }
   };
 
+  // Update date function
+  const updateDate = async (person_name: string, newDate: string) => {
+    try {
+      console.log(`Updating ${person_name}: onboarding_date = ${newDate}`);
+      
+      const { error } = await supabase
+        .from('it_checklist')
+        .update({ onboarding_date: newDate })
+        .eq('person_name', person_name);
+      
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log(`Successfully updated ${person_name}: onboarding_date = ${newDate}`);
+      
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ['it_checklists'] });
+      setEditingDate(null);
+      
+    } catch (error) {
+      console.error('Error updating date:', error);
+    }
+  };
+
+  // Update comments function
+  const updateComments = async (person_name: string, comments: string) => {
+    try {
+      console.log(`Updating ${person_name}: comments = ${comments}`);
+      
+      const { error } = await supabase
+        .from('it_checklist')
+        .update({ comments })
+        .eq('person_name', person_name);
+      
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log(`Successfully updated ${person_name}: comments = ${comments}`);
+      
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ['it_checklists'] });
+      
+    } catch (error) {
+      console.error('Error updating comments:', error);
+    }
+  };
+
+  // Handle comments modal
+  const openCommentsModal = (person_name: string, currentComments: string = '') => {
+    setSelectedEmployee(person_name);
+    setCommentsText(currentComments);
+    setShowCommentsModal(true);
+  };
+
+  const saveComments = async () => {
+    if (selectedEmployee) {
+      await updateComments(selectedEmployee, commentsText);
+      setShowCommentsModal(false);
+      setSelectedEmployee('');
+      setCommentsText('');
+    }
+  };
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (employee: NewEmployeeForm) => {
@@ -312,6 +384,9 @@ const ITChecklistManager: React.FC = () => {
                 <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
                   JumpCloud
                 </th>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '100px' }}>
+                  Comentarios
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
@@ -334,7 +409,29 @@ const ITChecklistManager: React.FC = () => {
                       {checklist.person_name}
                     </td>
                     <td className="px-6 py-4 text-sm">
-                      {new Date(checklist.onboarding_date).toLocaleDateString('es-ES')}
+                      {editingDate === checklist.person_name ? (
+                        <input
+                          type="date"
+                          defaultValue={checklist.onboarding_date}
+                          onBlur={(e) => updateDate(checklist.person_name, e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              updateDate(checklist.person_name, e.currentTarget.value);
+                            } else if (e.key === 'Escape') {
+                              setEditingDate(null);
+                            }
+                          }}
+                          className="px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                          autoFocus
+                        />
+                      ) : (
+                        <button
+                          onClick={() => setEditingDate(checklist.person_name)}
+                          className="text-left hover:bg-slate-100 px-2 py-1 rounded transition-colors"
+                        >
+                          {new Date(checklist.onboarding_date).toLocaleDateString('es-ES')}
+                        </button>
+                      )}
                     </td>
                     {/* Mandatory toggles */}
                     <td className="px-6 py-4 text-center">
@@ -409,6 +506,19 @@ const ITChecklistManager: React.FC = () => {
                         checked={checklist.jumpcloud || false}
                         onChange={() => updateField(checklist.person_name, 'jumpcloud', !(checklist.jumpcloud || false))}
                       />
+                    </td>
+                    {/* Comments column */}
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => openCommentsModal(checklist.person_name, checklist.comments || '')}
+                        className="p-1 rounded-lg hover:bg-slate-100 transition-colors"
+                      >
+                        {checklist.comments ? (
+                          <CheckIcon className="h-5 w-5 text-green-600" />
+                        ) : (
+                          <PencilIcon className="h-5 w-5 text-slate-400" />
+                        )}
+                      </button>
                     </td>
                   </tr>
                 );
@@ -502,6 +612,69 @@ const ITChecklistManager: React.FC = () => {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Comments Modal */}
+      <AnimatePresence>
+        {showCommentsModal && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-xl p-6 w-full max-w-md"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Comentarios - {selectedEmployee}
+                </h3>
+                <button
+                  onClick={() => setShowCommentsModal(false)}
+                  className="p-1 rounded-lg hover:bg-slate-100 text-slate-500"
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-900">
+                    Comentarios de onboarding
+                  </label>
+                  <textarea
+                    value={commentsText}
+                    onChange={(e) => setCommentsText(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-900"
+                    rows={4}
+                    placeholder="Agregar comentarios sobre el proceso de onboarding..."
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowCommentsModal(false)}
+                    className="flex-1 px-4 py-2 border border-slate-300 rounded-lg font-medium transition-colors text-slate-700 hover:bg-slate-50"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={saveComments}
+                    className="flex-1 px-4 py-2 rounded-lg text-white font-medium transition-colors bg-slate-900 hover:bg-slate-800"
+                  >
+                    Guardar
+                  </button>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}

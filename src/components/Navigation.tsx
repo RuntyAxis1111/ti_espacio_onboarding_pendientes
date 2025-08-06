@@ -25,7 +25,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-slate-900 border-b border-slate-700">
+    <nav className="sticky top-0 z-50 bg-slate-900 border-b border-slate-700 shadow-md transition-opacity duration-300">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center">
           <div className="flex space-x-8">
