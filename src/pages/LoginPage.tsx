@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: { 
-          redirectTo: `${window.location.origin}` 
+          redirectTo: `${window.location.origin}/`
         }
       });
       console.log('🔍 LoginPage: Google login initiated');
