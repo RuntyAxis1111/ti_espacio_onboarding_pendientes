@@ -38,9 +38,12 @@ const ITChecklistManager: React.FC = () => {
   });
 
   // Sort checklists alphabetically by person_name
-  const sortedChecklists = [...checklists].sort((a, b) => 
-    a.person_name.localeCompare(b.person_name, 'es', { sensitivity: 'base' })
-  );
+  const sortedChecklists = [...checklists].sort((a, b) => {
+    // Sort by onboarding_date descending (newest first)
+    const dateA = new Date(a.onboarding_date);
+    const dateB = new Date(b.onboarding_date);
+    return dateB.getTime() - dateA.getTime();
+  });
 
   // Real-time subscriptions
   useEffect(() => {
