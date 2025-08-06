@@ -170,7 +170,8 @@ const ITChecklistManager: React.FC = () => {
           billboard: false,
           rost: false,
           canva_pro: false,
-          jumpcloud: false
+          jumpcloud: false,
+          chatgpt: false
         }]);
       
       if (error) throw error;
@@ -332,59 +333,62 @@ const ITChecklistManager: React.FC = () => {
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-          <div className="overflow-x-auto">
+        <div className="overflow-x-auto table-wrapper">
             <table className="w-full">
-            <thead>
+            <thead className="sticky top-0 z-20 bg-slate-50">
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th 
-                  className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider sticky left-0 z-10 bg-slate-50"
+                  className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider sticky left-0 z-30 bg-slate-50"
                   style={{ width: '220px', minWidth: '220px' }}
                 >
                   Empleado
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50">
                   Fecha Onboarding
                 </th>
                 {/* Mandatory columns */}
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Antivirus
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Backup
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   1Password
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Slack
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Monday
                 </th>
                 {/* Extras sub-header */}
-                <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500 bg-slate-50" style={{ width: '80px' }}>
                   <span className="text-gray-500 font-semibold">Extras</span><br />
                   Adobe
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Office
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Acrobat
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Billboard
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Rost
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   Canva Pro
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '80px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
+                  ChatGPT
+                </th>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '80px' }}>
                   JumpCloud
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" style={{ width: '100px' }}>
+                <th className="px-6 py-4 text-center text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50" style={{ width: '100px' }}>
                   Comentarios
                 </th>
               </tr>
@@ -499,6 +503,12 @@ const ITChecklistManager: React.FC = () => {
                       <Toggle
                         checked={checklist.canva_pro || false}
                         onChange={() => updateField(checklist.person_name, 'canva_pro', !(checklist.canva_pro || false))}
+                      />
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <Toggle
+                        checked={checklist.chatgpt || false}
+                        onChange={() => updateField(checklist.person_name, 'chatgpt', !(checklist.chatgpt || false))}
                       />
                     </td>
                     <td className="px-6 py-4 text-center">

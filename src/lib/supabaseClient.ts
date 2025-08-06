@@ -34,6 +34,7 @@ export interface ITChecklist {
   rost?: boolean;
   canva_pro?: boolean;
   jumpcloud?: boolean;
+  chatgpt?: boolean;
   updated_at?: string;
   mandatory_ok?: boolean;
   comments?: string;

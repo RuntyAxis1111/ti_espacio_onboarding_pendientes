@@ -44,7 +44,7 @@ body {
 .data-table td:first-child {
   position: sticky;
   left: 0;
-  z-index: 30;
+  z-index: 25;
   background: #FFFFFF;
 }
 
@@ -57,6 +57,25 @@ body {
 
 /* First column header gets highest z-index */
 .data-table thead th:first-child {
+  z-index: 35;
+  background: #F5F6F8;
+}
+
+/* Sticky table header */
+.table-wrapper {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #F5F6F8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-wrapper thead th:first-child {
   z-index: 30;
   background: #F5F6F8;
 }
