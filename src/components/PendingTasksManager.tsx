@@ -86,14 +86,35 @@ const PendingTasksManager: React.FC<PendingTasksManagerProps> = ({ tableName, ti
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (task: NewTaskForm) => {
-      console.log(`Creating task in table: ${tableName}`);
-      await createTask(tableName, {
-        ...task,
+      console.log(`🔍 Creating task in table: ${tableName}`, task);
+      
+      // Prepare task data with all required fields
+      const taskData = {
+        title: task.title,
+        description: task.description || null,
+        start_date: task.start_date || null,
+        due_date: task.due_date || null,
+        importance: task.importance,
         completed: false
-      });
+      };
+      
+      console.log(`🔍 Task data to insert:`, taskData);
+      
+      const { data, error } = await supabase
+        .from(tableName)
+        .insert([taskData])
+        .select();
+      
+      if (error) {
+        console.error(`❌ Error creating task in ${tableName}:`, error);
+        throw error;
+      }
+      
+      console.log(`✅ Task created successfully in ${tableName}:`, data);
+      return data;
     },
     onSuccess: () => {
-      console.log(`Task created successfully in ${tableName}`);
+      console.log(`✅ Task creation success for ${tableName}`);
       queryClient.invalidateQueries({ queryKey: ['pending_tasks', tableName] });
       setShowCreateForm(false);
       setFormData({
@@ -106,7 +127,7 @@ const PendingTasksManager: React.FC<PendingTasksManagerProps> = ({ tableName, ti
       setFormErrors({});
     },
     onError: (error: any) => {
-      console.error(`Error creating task in ${tableName}:`, error);
+      console.error(`❌ Task creation error for ${tableName}:`, error);
     }
   });
 

@@ -35,7 +35,7 @@ const AppLayout: React.FC = () => {
   };
   
   return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white pt-16">
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
         <main>{renderContent()}</main>
       </div>
