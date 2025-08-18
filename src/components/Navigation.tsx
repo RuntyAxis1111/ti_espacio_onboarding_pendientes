@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ClipboardDocumentListIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 
 interface NavigationProps {
   activeTab: string;
@@ -16,11 +16,12 @@ const tabs = [
 ];
 
 const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
-  const { user, signOut } = useAuth();
+  // const { user, signOut } = useAuth();
   const [showDropdown, setShowDropdown] = React.useState(false);
+  const user = { user_metadata: { full_name: 'Usuario Temporal', email: 'temp@hybe.com' } }; // 🚧 TEMPORARY
 
   const handleSignOut = async () => {
-    await signOut();
+    // await signOut();
     setShowDropdown(false);
   };
 
