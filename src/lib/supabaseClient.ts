@@ -40,6 +40,22 @@ export interface ITChecklist {
   comments?: string;
 }
 
+export type TicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
+export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+export interface Ticket {
+  id: string;
+  ticket_number: number;
+  title: string;
+  area: string;
+  description?: string;
+  status: TicketStatus;
+  priority: TicketPriority;
+  created_at: string;
+  updated_at: string;
+  created_by?: string;
+}
+
 // Función para obtener todos los checklists
 export const getITChecklists = async (): Promise<ITChecklist[]> => {
   const { data, error } = await supabase
@@ -49,6 +65,36 @@ export const getITChecklists = async (): Promise<ITChecklist[]> => {
   
   if (error) throw error;
   return data || [];
+};
+
+// Funciones para tickets
+export const getTickets = async (): Promise<Ticket[]> => {
+  const { data, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) throw error;
+  return data || [];
+};
+
+export const createTicket = async (ticket: Omit<Ticket, 'id' | 'ticket_number' | 'created_at' | 'updated_at' | 'created_by'>) => {
+  const { data, error } = await supabase
+    .from('tickets')
+    .insert([ticket])
+    .select();
+  
+  if (error) throw error;
+  return data;
+};
+
+export const updateTicket = async (id: string, updates: Partial<Ticket>) => {
+  const { error } = await supabase
+    .from('tickets')
+    .update(updates)
+    .eq('id', id);
+  
+  if (error) throw error;
 };
 
 // Función para obtener tareas pendientes

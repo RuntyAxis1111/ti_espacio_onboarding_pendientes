@@ -6,6 +6,7 @@ import AuthLayout from './components/AuthLayout';
 import Navigation from './components/Navigation';
 import ITChecklistManager from './pages/ITChecklistManager';
 import PendingTasksManager from './components/PendingTasksManager';
+import TicketingManager from './pages/TicketingManager';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,8 @@ const AppLayout: React.FC = () => {
     switch (activeTab) {
       case 'it-checklist':
         return <ITChecklistManager />;
+      case 'ticketing':
+        return <TicketingManager />;
       case 'pendientes-johan':
         return <PendingTasksManager tableName="pendientes_johan" title="Pendientes Johan" />;
       case 'pendientes-dani':
