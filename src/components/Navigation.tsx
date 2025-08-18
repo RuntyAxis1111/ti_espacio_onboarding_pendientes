@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ClipboardDocumentListIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 
 interface NavigationProps {
   activeTab: string;
@@ -17,12 +17,20 @@ const tabs = [
 ];
 
 const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
-  const { user, signOut } = useAuth();
+  // const { user, signOut } = useAuth();
   const [showDropdown, setShowDropdown] = React.useState(false);
 
-  const handleSignOut = async () => {
-    await signOut();
-    setShowDropdown(false);
+  // const handleSignOut = async () => {
+  //   await signOut();
+  //   setShowDropdown(false);
+  // };
+
+  // Temporary user data while auth is disabled
+  const tempUser = {
+    user_metadata: {
+      email: 'temp@hybe.com',
+      full_name: 'Usuario Temporal'
+    }
   };
 
   return (
@@ -72,15 +80,15 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
             >
               <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium text-slate-200">
-                  {user?.user_metadata?.email?.charAt(0).toUpperCase() || 'U'}
+                  {tempUser?.user_metadata?.email?.charAt(0).toUpperCase() || 'U'}
                 </span>
               </div>
               <div className="hidden md:block text-left">
                 <p className="text-sm font-medium text-slate-200">
-                  {user?.user_metadata?.full_name || 'Usuario'}
+                  {tempUser?.user_metadata?.full_name || 'Usuario'}
                 </p>
                 <p className="text-xs text-slate-400">
-                  {user?.user_metadata?.email}
+                  {tempUser?.user_metadata?.email}
                 </p>
               </div>
               <ChevronDownIcon className="h-4 w-4" />
@@ -96,10 +104,10 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
                 transition={{ duration: 0.1 }}
               >
                 <button
-                  onClick={handleSignOut}
+                  onClick={() => setShowDropdown(false)}
                   className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors duration-150"
                 >
-                  Cerrar sesión
+                  Cerrar sesión (Deshabilitado)
                 </button>
               </motion.div>
             )}
