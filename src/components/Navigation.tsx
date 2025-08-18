@@ -10,6 +10,7 @@ interface NavigationProps {
 
 const tabs = [
   { id: 'it-checklist', label: 'IT Checklist', icon: '🐧' },
+  { id: 'computadoras-seguro', label: 'Computadoras con Seguro', icon: '💻' },
   { id: 'ticketing', label: 'Ticketing', icon: '🎫' },
   { id: 'pendientes-johan', label: 'Pendientes Johan', icon: ClipboardDocumentListIcon },
   { id: 'pendientes-dani', label: 'Pendientes Dani', icon: ClipboardDocumentListIcon },

@@ -7,6 +7,7 @@ import Navigation from './components/Navigation';
 import ITChecklistManager from './pages/ITChecklistManager';
 import PendingTasksManager from './components/PendingTasksManager';
 import TicketingManager from './pages/TicketingManager';
+import ComputadorasConSeguroManager from './pages/ComputadorasConSeguroManager';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,8 @@ const AppLayout: React.FC = () => {
     switch (activeTab) {
       case 'it-checklist':
         return <ITChecklistManager />;
+      case 'computadoras-seguro':
+        return <ComputadorasConSeguroManager />;
       case 'ticketing':
         return <TicketingManager />;
       case 'pendientes-johan':

@@ -57,6 +57,15 @@ export interface Ticket {
   created_by?: string;
 }
 
+export interface ComputadoraConSeguro {
+  numero_de_serie: string;
+  numero_de_poliza: string;
+  nombre_persona: string;
+  vigencia_apple_care?: string;
+  vigencia_poliza_insurama: string;
+  created_at: string;
+}
+
 // Función para obtener todos los checklists
 export const getITChecklists = async (): Promise<ITChecklist[]> => {
   const { data, error } = await supabase
@@ -66,6 +75,36 @@ export const getITChecklists = async (): Promise<ITChecklist[]> => {
   
   if (error) throw error;
   return data || [];
+};
+
+// Funciones para computadoras con seguro
+export const getComputadorasConSeguro = async (): Promise<ComputadoraConSeguro[]> => {
+  const { data, error } = await supabase
+    .from('computadoras_con_seguro')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) throw error;
+  return data || [];
+};
+
+export const createComputadoraConSeguro = async (computadora: Omit<ComputadoraConSeguro, 'created_at'>) => {
+  const { data, error } = await supabase
+    .from('computadoras_con_seguro')
+    .insert([computadora])
+    .select();
+  
+  if (error) throw error;
+  return data;
+};
+
+export const updateComputadoraConSeguro = async (numero_de_serie: string, updates: Partial<ComputadoraConSeguro>) => {
+  const { error } = await supabase
+    .from('computadoras_con_seguro')
+    .update(updates)
+    .eq('numero_de_serie', numero_de_serie);
+  
+  if (error) throw error;
 };
 
 // Funciones para tickets
