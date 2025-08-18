@@ -48,6 +48,7 @@ export interface Ticket {
   ticket_number: number;
   title: string;
   area: string;
+  requester_name?: string;
   description?: string;
   status: TicketStatus;
   priority: TicketPriority;

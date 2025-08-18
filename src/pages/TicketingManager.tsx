@@ -13,6 +13,7 @@ import { supabase, Ticket, TicketStatus, TicketPriority, getTickets, createTicke
 interface NewTicketForm {
   title: string;
   area: string;
+  requester_name: string;
   description: string;
   priority: TicketPriority;
 }
@@ -32,16 +33,14 @@ const priorityColors = {
 };
 
 const areas = [
-  'IT Support',
-  'Hardware',
-  'Software',
-  'Network',
-  'Security',
-  'Access',
-  'Email',
-  'Phone',
-  'Printer',
-  'Other'
+  'Finanzas',
+  'Legal',
+  'Podcast',
+  'Docemil',
+  'Zarpazo',
+  'Hybe General',
+  'Recursos Humanos',
+  'Artistas'
 ];
 
 const TicketingManager: React.FC = () => {
@@ -51,6 +50,7 @@ const TicketingManager: React.FC = () => {
   const [formData, setFormData] = useState<NewTicketForm>({
     title: '',
     area: '',
+    requester_name: '',
     description: '',
     priority: 'medium'
   });
@@ -112,6 +112,7 @@ const TicketingManager: React.FC = () => {
       const ticketData = {
         title: ticket.title,
         area: ticket.area,
+        requester_name: ticket.requester_name || null,
         description: ticket.description || null,
         priority: ticket.priority,
         status: 'open' as TicketStatus
@@ -129,6 +130,7 @@ const TicketingManager: React.FC = () => {
       setFormData({
         title: '',
         area: '',
+        requester_name: '',
         description: '',
         priority: 'medium'
       });
@@ -148,6 +150,10 @@ const TicketingManager: React.FC = () => {
     
     if (!formData.area.trim()) {
       errors.area = 'Área es requerida';
+    }
+    
+    if (!formData.requester_name.trim()) {
+      errors.requester_name = 'Persona que solicita es requerida';
     }
 
     setFormErrors(errors);
@@ -243,6 +249,9 @@ const TicketingManager: React.FC = () => {
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Título
                   </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-40">
+                    Solicitante
+                  </th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-32">
                     Área
                   </th>
@@ -273,6 +282,9 @@ const TicketingManager: React.FC = () => {
                       <div className="font-medium text-slate-900">
                         {ticket.title}
                       </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-600">
+                      {ticket.requester_name || '-'}
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-600">
                       {ticket.area}
@@ -390,6 +402,25 @@ const TicketingManager: React.FC = () => {
                   {formErrors.area && (
                     <p className="text-xs mt-1 text-red-600">
                       {formErrors.area}
+                    </p>
+                  )}
+                </div>
+
+                {/* Requester Name */}
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-900">
+                    Persona que solicita ayuda *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.requester_name}
+                    onChange={(e) => setFormData({ ...formData, requester_name: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-900"
+                    placeholder="Ej: Juan Pérez"
+                  />
+                  {formErrors.requester_name && (
+                    <p className="text-xs mt-1 text-red-600">
+                      {formErrors.requester_name}
                     </p>
                   )}
                 </div>
