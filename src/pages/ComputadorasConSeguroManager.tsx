@@ -14,7 +14,6 @@ interface NewComputadoraForm {
   numero_de_serie: string;
   numero_de_poliza: string;
   nombre_persona: string;
-  model: 'mac_pro' | 'mac_air' | 'lenovo';
   vigencia_apple_care: string;
   vigencia_poliza_insurama: string;
 }
@@ -27,7 +26,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
     numero_de_serie: '',
     numero_de_poliza: '',
     nombre_persona: '',
-    model: 'mac_pro',
     vigencia_apple_care: '',
     vigencia_poliza_insurama: ''
   });
@@ -66,7 +64,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
         numero_de_serie: computadora.numero_de_serie,
         numero_de_poliza: computadora.numero_de_poliza,
         nombre_persona: computadora.nombre_persona,
-        model: computadora.model,
         vigencia_apple_care: computadora.vigencia_apple_care || null,
         vigencia_poliza_insurama: computadora.vigencia_poliza_insurama
       };
@@ -84,7 +81,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
         numero_de_serie: '',
         numero_de_poliza: '',
         nombre_persona: '',
-        model: 'mac_pro',
         vigencia_apple_care: '',
         vigencia_poliza_insurama: ''
       });
@@ -113,10 +109,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
       errors.nombre_persona = 'Nombre de la persona es requerido';
     }
     
-    if (!formData.model) {
-      errors.model = 'Tipo de computadora es requerido';
-    }
-    
     if (!formData.vigencia_poliza_insurama.trim()) {
       errors.vigencia_poliza_insurama = 'Vigencia póliza Insurama es requerida';
     }
@@ -131,15 +123,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
     if (!validateForm()) return;
     
     createMutation.mutate(formData);
-  };
-
-  const getModelLabel = (model: string) => {
-    switch (model) {
-      case 'mac_pro': return 'MacBook Pro';
-      case 'mac_air': return 'MacBook Air';
-      case 'lenovo': return 'Lenovo';
-      default: return model;
-    }
   };
 
   // Calculate stats
@@ -243,9 +226,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-48">
                     Persona Asignada
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-32">
-                    Tipo
-                  </th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-40">
                     Vigencia Apple Care
                   </th>
@@ -273,9 +253,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
                       <div className="font-medium text-slate-900">
                         {computadora.nombre_persona}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
-                      {getModelLabel(computadora.model)}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       {computadora.vigencia_apple_care ? (
@@ -395,27 +372,6 @@ const ComputadorasConSeguroManager: React.FC = () => {
                   {formErrors.nombre_persona && (
                     <p className="text-xs mt-1 text-red-600">
                       {formErrors.nombre_persona}
-                    </p>
-                  )}
-                </div>
-
-                {/* Tipo de Computadora */}
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-slate-900">
-                    Tipo de Computadora *
-                  </label>
-                  <select
-                    value={formData.model}
-                    onChange={(e) => setFormData({ ...formData, model: e.target.value as 'mac_pro' | 'mac_air' | 'lenovo' })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-900"
-                  >
-                    <option value="mac_pro">MacBook Pro</option>
-                    <option value="mac_air">MacBook Air</option>
-                    <option value="lenovo">Lenovo</option>
-                  </select>
-                  {formErrors.model && (
-                    <p className="text-xs mt-1 text-red-600">
-                      {formErrors.model}
                     </p>
                   )}
                 </div>

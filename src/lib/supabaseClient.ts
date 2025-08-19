@@ -61,7 +61,6 @@ export interface ComputadoraConSeguro {
   numero_de_serie: string;
   numero_de_poliza: string;
   nombre_persona: string;
-  model: 'mac_pro' | 'mac_air' | 'lenovo';
   vigencia_apple_care?: string;
   vigencia_poliza_insurama: string;
   created_at: string;
