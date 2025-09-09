@@ -22,6 +22,7 @@ export interface PendingTask {
 export interface ITChecklist {
   person_name: string;
   onboarding_date: string;
+  serial_number?: string;
   antivirus: boolean;
   backup: boolean;
   onepassword: boolean;
